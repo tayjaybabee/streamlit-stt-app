@@ -38,7 +38,7 @@ def download_file(url, download_to: Path, expected_size=None):
     # These are handles to two visual elements to animate.
     weights_warning, progress_bar = None, None
     try:
-        weights_warning = st.warning("Downloading %s..." % url)
+        weights_warning = st.warning(f"Downloading {url}...")
         progress_bar = st.progress(0)
         with open(download_to, "wb") as output_file:
             with urllib.request.urlopen(url) as response:
@@ -58,7 +58,6 @@ def download_file(url, download_to: Path, expected_size=None):
                         % (url, counter / MEGABYTES, length / MEGABYTES)
                     )
                     progress_bar.progress(min(counter / length, 1.0))
-    # Finally, we remove these visual elements by calling .empty().
     finally:
         if weights_warning is not None:
             weights_warning.empty()
@@ -234,7 +233,7 @@ def app_sst_with_video(
                     frame = frames_deque.popleft()
                     audio_frames.append(frame)
 
-            if len(audio_frames) == 0:
+            if not audio_frames:
                 time.sleep(0.1)
                 status_indicator.write("No frame arrived.")
                 continue
